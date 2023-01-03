@@ -14,12 +14,10 @@ const GoogleButton = ({ onSocial }) => {
 
     //const { googleId, profileObj : { email, name } } = response;
 
-    // await onSocial({
-    //   socialId : googleId,
-    //   socialType : 'google',
-    //   email,
-    //   nickname : name
-    // })
+    await onSocial({
+      socialType: 'google',
+      credential: response.credential
+    })
   }
 
   const onError = () => {

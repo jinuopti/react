@@ -1,24 +1,19 @@
 import './App.css';
-import {styled} from '@mui/material/styles';
-import {Container, Box, Grid, Paper, TextField, ButtonGroup, Button} from "@mui/material";
 import SignInSide from "./pages/Signin";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
-
-const Item = styled(Paper)(({theme}) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import KakaoRedirectHandler from "./login/KakaoRedirect";
+import KakaoLoginComplete from "./login/KakaoLoginComplete";
 
 function App() {
     return (
-        <div className="App">
-            <SignInSide></SignInSide>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path={"/"} element={<SignInSide/>}/>
+                <Route path={"/oauth/kakao"} element={<KakaoRedirectHandler/>}/>
+                <Route path={'/login/oauth'} element={<KakaoLoginComplete/>}/>
+            </Routes>
+        </BrowserRouter>
     );
 }
 

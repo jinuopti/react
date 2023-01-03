@@ -15,6 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import GoogleButton from "../login/GoogleButton";
+import KakaoButton from "../login/KakaoButton";
 
 function Copyright(props) {
   return (
@@ -40,6 +41,15 @@ export default function SignInSide() {
       password: data.get('password'),
     });
   };
+
+  const handleGoogleLogin = (params) => {
+    console.log("handleGoogleLogin socialType: ", params.socialType)
+    console.log("handleGoogleLogin credential: ", params.credential)
+  }
+
+  const handleKakaoLogin = (params) => {
+    console.log("HandleKakaoLogin: ", params)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,15 +120,10 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  {/*<Link href="#" variant="body2">*/}
-                  {/*  <img src={"images/btn_google_signin_light_normal_web.png"}></img>*/}
-                  {/*</Link>*/}
-                  <GoogleButton/>
+                  <GoogleButton onSocial={handleGoogleLogin}/>
                 </Grid>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    <img src={"images/kakao_login_medium_narrow.png"}></img>
-                  </Link>
+                  <KakaoButton onSocial={handleKakaoLogin}/>
                 </Grid>
               </Grid>
               <Grid container>
