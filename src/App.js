@@ -17,31 +17,7 @@ const Item = styled(Paper)(({theme}) => ({
 function App() {
     return (
         <div className="App">
-            <header className="App-header">LILPOP</header>
-
-            <Container maxWidth="false"
-                       justifyContent="flex-start"
-                       alignItems="flex-start">
-                <Grid container spacing={0.5}>
-                    <Grid item xs={2}>
-                        <Item>Left Menu</Item>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <SignInSide></SignInSide>
-                    </Grid>
-                </Grid>
-            </Container>
-
-            <footer>
-                <Typography variant="body2" color="text.secondary" align="center">
-                    {'Copyright © '}
-                    <Link color="inherit" href="https://lilpop.net/">
-                        KREDIMEDIA
-                    </Link>{' '}
-                    {new Date().getFullYear()}
-                    {'.'}
-                </Typography>
-            </footer>
+            <SignInSide></SignInSide>
         </div>
     );
 }
