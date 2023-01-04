@@ -1,0 +1,7 @@
+export const API_KEY = "AIzaSyBa-86ywwj1aKtIs23gl_ZqLRcSsec1cmI"
+export const AUTH_DOMAIN = "lilpop-test.firebaseapp.com"
+export const PROJECT_ID = "lilpop-test"
+export const STORAGE_BUCKET = "lilpop-test.appspot.com"
+export const MESSAGING_SENDER_ID = "834577472705"
+export const APP_ID = "1:834577472705:web:a717ac22e5fb2d217cc840"
+export const MEASUREMENT_ID = "G-MDCECVT88V"

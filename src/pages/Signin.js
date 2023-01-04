@@ -14,8 +14,13 @@ import {
   Grid,
   Typography
 } from '@mui/material';
-import GoogleButton from "../login/GoogleButton";
 import KakaoButton from "../login/KakaoButton";
+import {useLocalStorage} from "../hooks/useLocalStorage";
+import {useNavigate} from "react-router";
+import axios from "axios";
+import {auth} from "../login/FirebaseLogin"
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {LOGIN_URL} from "../configs/Url";
 
 function Copyright(props) {
   return (
@@ -33,22 +38,76 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
+  const [authData, setAuthData] = useLocalStorage("Auth")
+  const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    LilpopLogin({
       userid: data.get('userid'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    })
   };
 
-  const handleGoogleLogin = (params) => {
-    console.log("handleGoogleLogin socialType: ", params.socialType)
-    console.log("handleGoogleLogin credential: ", params.credential)
+  const handleGoogleLogin = () => {
+    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+    signInWithPopup(auth, provider) // popup을 이용한 signup
+      .then((params) => {
+        console.log(params) // console로 들어온 데이터 표시
+        const data = {
+          "auth_type": "google",
+          "access_token": params.user.accessToken,
+        }
+        axios.post(LOGIN_URL, data)
+          .then((response) => {
+            console.log("response: ", response)
+            setAuthData({
+              "authenticated": true,
+              "authType": "google",
+              "authToken": response.data.access_token,
+              "id": response.data.id,
+              "refreshToken": response.data.refresh_token,
+              "nickname": response.data.nickname,
+            })
+            navigate("/")
+          })
+          .catch((error) => {
+            console.log("error: ", error)
+          })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const handleKakaoLogin = (params) => {
     console.log("HandleKakaoLogin: ", params)
+  }
+
+  const LilpopLogin = (props) => {
+    const data = {
+      "id": props.userid,
+      "auth_type": "lilpop",
+      "password": btoa(props.password),
+    }
+    console.log("Lilpop Login Req: ", data)
+    axios.post(LOGIN_URL, data)
+      .then((response) => {
+        console.log("response: ", response)
+        setAuthData({
+          "authenticated": true,
+          "authType": "lilpop",
+          "authToken": response.data.access_token,
+          "id": response.data.id,
+          "refreshToken": response.data.refresh_token,
+          "nickname": response.data.nickname,
+        })
+        navigate("/")
+      })
+      .catch((error) => {
+        console.log("error: ", error)
+      })
   }
 
   return (
@@ -120,7 +179,7 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <GoogleButton onSocial={handleGoogleLogin}/>
+                  <button onClick={handleGoogleLogin}>Google Login</button>
                 </Grid>
                 <Grid item xs>
                   <KakaoButton onSocial={handleKakaoLogin}/>

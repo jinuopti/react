@@ -1,20 +1,20 @@
 import './App.css';
-import SignInSide from "./pages/Signin";
 import * as React from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
+import Main from "./pages/Main";
+import SignInSide from "./pages/Signin";
 import KakaoRedirectHandler from "./login/KakaoRedirect";
-import KakaoLoginComplete from "./login/KakaoLoginComplete";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path={"/"} element={<SignInSide/>}/>
-                <Route path={"/oauth/kakao"} element={<KakaoRedirectHandler/>}/>
-                <Route path={'/login/oauth'} element={<KakaoLoginComplete/>}/>
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <>
+      <Routes>
+        <Route path={"/"} element={<Main/>}/>
+        <Route path={"/login"} element={<SignInSide/>}/>
+        <Route path={"/oauth/kakao"} element={<KakaoRedirectHandler/>}/>
+      </Routes>
+    </>
+  )
 }
 
 export default App;
