@@ -2,7 +2,7 @@ import {Navigate} from "react-router-dom";
 import {useLocalStorage} from "../hooks/useLocalStorage";
 import axios from "axios";
 import {useEffect} from "react";
-import {USERINFO_URL} from "../configs/Url";
+import {USERINFO_URL, VERIFY_TOKEN_URL} from "../configs/Url";
 
 const Main = () => {
   const defaultAuthValue = {
@@ -32,13 +32,12 @@ const Main = () => {
   }
 
   const verifyToken = () => {
-    const verifyTokenUrl = "https://dev.lilpop.kr/api/v1/auth/token"
     const req = {
       id: authData.id,
       grant_type: "validation",
       access_token: authData.authToken,
     }
-    axios.post(verifyTokenUrl, req)
+    axios.post(VERIFY_TOKEN_URL, req)
       .then((response) => {
         console.log("VerifyToken response: ", response)
         if (response.data.code !== 0) {
