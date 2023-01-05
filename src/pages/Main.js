@@ -1,8 +1,13 @@
 import {Navigate} from "react-router-dom";
 import {useLocalStorage} from "../hooks/useLocalStorage";
 import axios from "axios";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {USERINFO_URL, VERIFY_TOKEN_URL} from "../configs/Url";
+import Header from "./Header";
+import Footer from "./Footer";
+import {Box, Container, Grid, Stack} from "@mui/material";
+import SideMenu from "./SideMenu";
+import Dashboard from "./Body/Dashboard";
 
 const Main = () => {
   const defaultAuthValue = {
@@ -12,6 +17,8 @@ const Main = () => {
   }
   const [authData, setAuthData] = useLocalStorage("Auth", defaultAuthValue)
   const [userInfo, setUserInfo] = useLocalStorage("UserInfo")
+  const [user, setUser] = useState({})
+  const [isVerifyToken, setIsVerifyToken] = useState(false)
 
   const getUserInfo = () => {
     axios.get(USERINFO_URL, {
@@ -25,6 +32,9 @@ const Main = () => {
       .then((response) => {
         console.log("UserInfo response: ", response)
         setUserInfo(response.data)
+        const u = JSON.stringify(response.data)
+        setUser(response.data)
+        console.log("User state: ", user)
       })
       .catch((error) => {
         console.log("error: ", error)
@@ -44,6 +54,7 @@ const Main = () => {
           console.log("error! msg: ", response.data.message)
           setAuthData({authenticated: false})
         } else {
+          setIsVerifyToken(true)
           console.log("success token validation")
           getUserInfo()
         }
@@ -63,12 +74,13 @@ const Main = () => {
   }
 
   useEffect(() => {
-    if (authData.authenticated) {
+    if (authData.authenticated && !isVerifyToken) {
       console.log("Already Logged, AuthData: ", authData)
       // Verify token
       verifyToken()
     }
-  }, [])
+    console.log("useEffect User state: ", user)
+  }, [user])
 
   if (!authData.authenticated) {
     // Redirect
@@ -76,10 +88,14 @@ const Main = () => {
   } else {
     return (
       <>
-        <h1>Main Page</h1>
-        <p>
-          <button onClick={logoutEvent}>Logout</button>
-        </p>
+        <Box bgcolor={"backgroud.default"} color={"text.primary"}>
+          <Header logoutEvent={logoutEvent}/>
+          <Stack direction={"row"} spacing={2} justifyContect={"space-betweeb"}>
+            <SideMenu/>
+            <Dashboard userinfo={user}/>
+          </Stack>
+          {/*<Footer />*/}
+        </Box>
       </>
     )
   }
