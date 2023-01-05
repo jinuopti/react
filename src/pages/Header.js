@@ -22,7 +22,7 @@ const Header = (props) => {
           <Typography variant={"h4"}>
             LILPOP
           </Typography>
-          <Icons onClick={props.logoutEvent}>
+          <Icons onClick={props.logoutEvent} className="btnLink">
             <LogoutIcon></LogoutIcon>
             <Typography variant={"h6"}>Logout</Typography>
           </Icons>

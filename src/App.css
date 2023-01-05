@@ -48,3 +48,7 @@ footer{
   position : relative;
   transform : translateY(-100%);
 }
+
+.btnLink {
+  cursor:pointer;
+}

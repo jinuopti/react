@@ -79,6 +79,7 @@ export default function SignInSide() {
       .catch((err) => {
         console.log(err);
       });
+    return false;
   }
 
   const handleKakaoLogin = (params) => {
@@ -179,7 +180,8 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <button onClick={handleGoogleLogin}>Google Login</button>
+                  <img src={"images/btn_google_signin_light_normal_web.png"} width="222" height="50"
+                       className="btnLink" onClick={handleGoogleLogin}/>
                 </Grid>
                 <Grid item xs>
                   <KakaoButton onSocial={handleKakaoLogin}/>
