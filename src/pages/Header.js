@@ -28,12 +28,6 @@ const Header = (props) => {
           </Icons>
         </StyledToolbar>
       </AppBar>
-      {/*<Box sx={{bgcolor: "grey", display: {xs: "none", sm: "block"}}}>*/}
-      {/*  <Typography variant={"h3"} color={"black"}>*/}
-      {/*    LILPOP*/}
-      {/*  </Typography>*/}
-      {/*  <button onClick={props.logoutEvent}>Logout</button>*/}
-      {/*</Box>*/}
     </>
   )
 }

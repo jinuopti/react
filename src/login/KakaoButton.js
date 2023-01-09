@@ -5,15 +5,32 @@ const {Kakao} = window;
 
 //const getCodeUrl = "/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"
 
-const KakaoButton = ({onSocial}) => {
+export const KakaoLogout = () => {
+  if (Kakao && Kakao.isInitialized()) {
+    console.log("kakao logout start")
+    Kakao.Auth.logout()
+        .then(function(response) {
+          console.log("Kakao logout", Kakao.Auth.getAccessToken()); // null
+        })
+        .catch(function(error) {
+          console.log('Not logged in.');
+        });
+  } else {
+    console.log("kakao is nil")
+  }
+}
+
+const KakaoButton = ({props}) => {
   const jsKey = "269452c2c061a2bece2fd47cbdaabe63";
 
   const initKakao = () => {
     console.log("kakao: ", Kakao.isInitialized(), Kakao)
     if (Kakao && !Kakao.isInitialized()) {
+      console.log("Kakao before: ", Kakao.Auth)
       Kakao.init(jsKey);
       if (Kakao.isInitialized()) {
-        console.log("Kakao Inited");
+        console.log("Kakao after: ", Kakao.Auth)
+        console.log("Kakao Inited: ", Kakao.Auth);
       }
     }
   };

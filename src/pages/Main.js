@@ -8,6 +8,9 @@ import Footer from "./Footer";
 import {Box, Container, Grid, Stack} from "@mui/material";
 import SideMenu from "./SideMenu";
 import Dashboard from "./Body/Dashboard";
+import { KakaoLogout } from "../login/KakaoButton";
+
+const {Kakao} = window;
 
 const Main = () => {
   const defaultAuthValue = {
@@ -19,6 +22,7 @@ const Main = () => {
   const [userInfo, setUserInfo] = useLocalStorage("UserInfo")
   const [user, setUser] = useState({})
   const [isVerifyToken, setIsVerifyToken] = useState(false)
+  const [isWebsocketConnected, setIsWebSocketConnected] = useState(false)
 
   const getUserInfo = () => {
     axios.get(USERINFO_URL, {
@@ -71,6 +75,7 @@ const Main = () => {
     console.log("Logout!")
     setAuthData({authenticated: false})
     setUserInfo({})
+    KakaoLogout()
   }
 
   useEffect(() => {
@@ -78,6 +83,9 @@ const Main = () => {
       console.log("Already Logged, AuthData: ", authData)
       // Verify token
       verifyToken()
+    }
+    if (!isWebsocketConnected) {
+      console.log("websocket connect")
     }
     console.log("useEffect User state: ", user)
   }, [user])

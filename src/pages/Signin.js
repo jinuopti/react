@@ -184,7 +184,7 @@ export default function SignInSide() {
                        className="btnLink" onClick={handleGoogleLogin}/>
                 </Grid>
                 <Grid item xs>
-                  <KakaoButton onSocial={handleKakaoLogin}/>
+                  <KakaoButton />
                 </Grid>
               </Grid>
               <Grid container>
