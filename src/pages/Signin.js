@@ -13,7 +13,7 @@ import {
   Box,
   Grid,
   Typography,
-  Stack,
+  Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
 } from '@mui/material';
 import KakaoButton from "../login/KakaoButton";
 import {useLocalStorage} from "../hooks/useLocalStorage";
@@ -21,8 +21,9 @@ import {useNavigate} from "react-router";
 import axios from "axios";
 import {auth} from "../login/FirebaseLogin"
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import {LOGIN_URL} from "../configs/Url";
+import {JOIN_URL, LOGIN_URL} from "../configs/Url";
 import NaverButton from "../login/NaverLogin";
+import {useState} from "react";
 
 function Copyright(props) {
   return (
@@ -40,12 +41,42 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
+  const [signupOpen, setSignupOpen] = useState(false);
+  const [signupInfo, setSignupInfo] = useState({})
   const [authData, setAuthData] = useLocalStorage("Auth")
   const navigate = useNavigate()
+
+  const handleSignupOpen = () => {
+    setSignupOpen(true)
+  }
+
+  const handleSignupClose = () => {
+    setSignupOpen(false)
+  }
+
+  const handleSignupSubmit = (e) => {
+    e.preventDefault()
+    const id = e.target.userid.value
+    const pass = e.target.password.value
+    const nick = e.target.nickname.value
+    console.log(id, pass, nick)
+    if (id.length <= 0 || pass.length <= 0 || nick.length <= 0) {
+      console.log("length error")
+      alert("정보를 모두 입력해주세요")
+    } else {
+      LilpopSignup({
+        userid: id,
+        password: pass,
+        nickname: nick,
+      })
+    }
+    setSignupOpen(false)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log("sign in start, data: ", event.currentTarget)
     LilpopLogin({
       userid: data.get('userid'),
       password: data.get('password')
@@ -113,6 +144,26 @@ export default function SignInSide() {
       })
   }
 
+  const LilpopSignup = (props) => {
+    const data = {
+      id: props.userid,
+      password: btoa(props.password),
+      nickname: props.nickname,
+    }
+    console.log("Lilpop Join Req: ", data)
+    axios.post(JOIN_URL, data)
+      .then(res => {
+        console.log("res: ", res)
+        LilpopLogin({
+          userid: props.userid,
+          password: props.password,
+        })
+      })
+      .catch(err => {
+        console.log("error: ", err)
+      })
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{height: '100vh'}}>
@@ -123,11 +174,12 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            // backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(/images/lilpop-img.png)',
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
+            // backgroundColor: (t) =>
+            //   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'contain',
             backgroundPosition: 'center',
           }}
         />
@@ -153,7 +205,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 id="userid"
-                label="ID"
+                label="User ID"
                 name="userid"
                 autoComplete="userid"
                 autoFocus
@@ -203,7 +255,7 @@ export default function SignInSide() {
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" onClick={handleSignupOpen}>
                     {"Sign Up"}
                   </Link>
                 </Stack>
@@ -213,6 +265,79 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
+
+      <Dialog open={signupOpen} onClose={handleSignupClose}>
+        <DialogTitle align="center">Sign Up</DialogTitle>
+        <Box component="form" noValidate onSubmit={handleSignupSubmit}>
+          <DialogContent>
+            <Stack spacing={2} sx={{mt: 2}}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <DialogContentText>
+                  User ID
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  required
+                  margin="normal"
+                  id="userid"
+                  label="User ID"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                />
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <DialogContentText>
+                  Password
+                </DialogContentText>
+                <TextField
+                  required
+                  margin="normal"
+                  id="password"
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  size="small"
+                />
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <DialogContentText>
+                  Nickname
+                </DialogContentText>
+                <TextField
+                  required
+                  margin="normal"
+                  id="nickname"
+                  label="Nickname"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                />
+              </Stack>
+            </Stack>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleSignupClose}>Cancel</Button>
+            <Button type="submit">Sign Up</Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
+
     </ThemeProvider>
   );
 }
