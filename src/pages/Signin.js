@@ -12,7 +12,8 @@ import {
   Paper,
   Box,
   Grid,
-  Typography
+  Typography,
+  Stack,
 } from '@mui/material';
 import KakaoButton from "../login/KakaoButton";
 import {useLocalStorage} from "../hooks/useLocalStorage";
@@ -21,6 +22,7 @@ import axios from "axios";
 import {auth} from "../login/FirebaseLogin"
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import {LOGIN_URL} from "../configs/Url";
+import NaverButton from "../login/NaverLogin";
 
 function Copyright(props) {
   return (
@@ -178,27 +180,34 @@ export default function SignInSide() {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <img src={"images/btn_google_signin_light_normal_web.png"} width="222" height="50"
+              <Box sx={{ width: '100%' }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={1}
+                >
+                  <img src={"images/btn_google_signin_light_normal_web.png"}
                        className="btnLink" onClick={handleGoogleLogin}/>
-                </Grid>
-                <Grid item xs>
                   <KakaoButton />
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid item xs>
+                  <NaverButton />
+                </Stack>
+              </Box>
+              <Box sx={{ width: '100%', mt: 2 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={2}
+                >
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
-                <Grid item xs>
                   <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Sign Up"}
                   </Link>
-                </Grid>
-              </Grid>
+                </Stack>
+              </Box>
               <Copyright sx={{mt: 5}}/>
             </Box>
           </Box>

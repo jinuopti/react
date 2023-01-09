@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import {Box, Container, Grid, Stack} from "@mui/material";
 import SideMenu from "./SideMenu";
 import Dashboard from "./Body/Dashboard";
-import { KakaoLogout } from "../login/KakaoButton";
+import {KakaoLogout, KakaoLogoutWithRedirect} from "../login/KakaoButton";
 
 const {Kakao} = window;
 
@@ -75,7 +75,10 @@ const Main = () => {
     console.log("Logout!")
     setAuthData({authenticated: false})
     setUserInfo({})
-    KakaoLogout()
+    if (authData.authType === "kakao") {
+      KakaoLogout()
+      //KakaoLogoutWithRedirect()
+    }
   }
 
   useEffect(() => {
@@ -96,9 +99,9 @@ const Main = () => {
   } else {
     return (
       <>
-        <Box bgcolor={"backgroud.default"} color={"text.primary"}>
+        <Box bgcolor={"background.default"} color={"text.primary"}>
           <Header logoutEvent={logoutEvent}/>
-          <Stack direction={"row"} spacing={2} justifyContect={"space-betweeb"}>
+          <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
             <SideMenu/>
             <Dashboard userinfo={user}/>
           </Stack>
