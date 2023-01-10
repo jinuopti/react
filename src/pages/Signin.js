@@ -63,6 +63,7 @@ export default function SignInSide() {
     if (id.length <= 0 || pass.length <= 0 || nick.length <= 0) {
       console.log("length error")
       alert("정보를 모두 입력해주세요")
+      return
     } else {
       LilpopSignup({
         userid: id,

@@ -12,6 +12,14 @@ import {KakaoLogout, KakaoLogoutWithRedirect} from "../login/KakaoButton";
 
 const {Kakao} = window;
 
+export const Page = {
+  MAIN: "main",
+  USER: "user",
+  SERVER: "server",
+  METAVERSE: "metaverse",
+  ADMIN: "admin",
+}
+
 const Main = () => {
   const defaultAuthValue = {
     "authenticated": false,
@@ -23,6 +31,7 @@ const Main = () => {
   const [user, setUser] = useState({})
   const [isVerifyToken, setIsVerifyToken] = useState(false)
   const [isWebsocketConnected, setIsWebSocketConnected] = useState(false)
+  const [ currPage, setCurrPage ] = useState(Page.MAIN)
 
   const getUserInfo = () => {
     axios.get(USERINFO_URL, {
@@ -101,9 +110,15 @@ const Main = () => {
       <>
         <Box bgcolor={"background.default"} color={"text.primary"}>
           <Header logoutEvent={logoutEvent}/>
-          <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
-            <SideMenu/>
-            <Dashboard userinfo={user}/>
+          <Stack direction={"row"} spacing={2} justifyContent={"start"}>
+            <Grid container>
+              <Grid item xs={2}>
+                <SideMenu onMenuChange={setCurrPage}/>
+              </Grid>
+              <Grid item xs>
+                <Dashboard currentPage={currPage}/>
+              </Grid>
+            </Grid>
           </Stack>
           {/*<Footer />*/}
         </Box>
