@@ -6,9 +6,14 @@ import {USERINFO_URL, VERIFY_TOKEN_URL} from "../configs/Url";
 import Header from "./Header";
 import Footer from "./Footer";
 import {Box, Container, Grid, Stack} from "@mui/material";
-import SideMenu from "./SideMenu";
 import Dashboard from "./Body/Dashboard";
 import {KakaoLogout, KakaoLogoutWithRedirect} from "../login/KakaoButton";
+import PersonIcon from '@mui/icons-material/Person';
+import StorageIcon from '@mui/icons-material/Storage';
+import PublicIcon from '@mui/icons-material/Public';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import HomeIcon from '@mui/icons-material/Home';
+import Menu from "../Menu";
 
 const {Kakao} = window;
 
@@ -19,6 +24,66 @@ export const Page = {
   METAVERSE: "metaverse",
   ADMIN: "admin",
 }
+
+export const menu = [
+  {
+    icon: <HomeIcon />,
+    id: "home",
+    title: "Home",
+    items: []
+  },
+  {
+    icon: <PersonIcon />,
+    id: "user",
+    title: "User",
+    items: []
+  },
+  {
+    icon: <StorageIcon />,
+    title: "Server",
+    items: [
+      {
+        title: "Server Management",
+        id: "server-server",
+        items: []
+        // items: [
+        //   {
+        //     id: "dow",
+        //     title: "The Dow Theory",
+        //     to: "/thedowtheory"
+        //   },
+        //   {
+        //     title: "Charts & Chart Patterns",
+        //     to: "/chart"
+        //   },
+        //   {
+        //     title: "Trend & Trend Lines",
+        //     to: "/trendlines"
+        //   },
+        //   {
+        //     title: "Support & Resistance",
+        //     to: "/sandr"
+        //   }
+        // ]
+      },
+      {
+        title: "File Management",
+        id: "server-file",
+        items: []
+      },
+    ]
+  },
+  {
+    icon: <PublicIcon />,
+    id: "metaverse",
+    title: "Metaverse"
+  },
+  {
+    icon: <SupervisorAccountIcon />,
+    id: "admin",
+    title: "Admin"
+  }
+];
 
 const Main = () => {
   const defaultAuthValue = {
@@ -113,7 +178,7 @@ const Main = () => {
           <Stack direction={"row"} spacing={2} justifyContent={"start"}>
             <Grid container>
               <Grid item xs={2}>
-                <SideMenu onMenuChange={setCurrPage}/>
+                <Menu items={menu} onMenuChange={setCurrPage}/>
               </Grid>
               <Grid item xs>
                 <Dashboard currentPage={currPage}/>
